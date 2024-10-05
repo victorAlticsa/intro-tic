@@ -18,12 +18,22 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import {
-    ChevronLeft,
-    ChevronRight,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+    // ChevronLeft,
+    // ChevronRight,
     PackageOpen,
     SlidersHorizontal,
 } from "lucide-react"
 import Link from 'next/link'
+import { Label } from '@/components/ui/label'
 
 // prenda:
 // - categoría (polo, short, pantalón, etc)
@@ -41,14 +51,16 @@ import Link from 'next/link'
 
 
 interface IClothe {
+    id: string;
+    groupId: string;
+    sellerId?: string;
+
     category: string;
     size: string;
     price: number;
     discount: number;
     isSold: boolean;
     manufactureDate: Date;
-    sellerId: string;
-    id: string;
     saleDate?: Date; // Opcional, ya que puede no haberse vendido aún
     address: string;
     color: string;
@@ -57,27 +69,29 @@ interface IClothe {
 
 const clothes: IClothe[] = [
     {
+        id: "P001",
+        groupId: "P54",
+        sellerId: "V001",
         category: "polo",
         size: "m",
         price: 25.99,
         discount: 5,
         isSold: false,
         manufactureDate: new Date("2024-01-15"),
-        sellerId: "V001",
-        id: "P001",
         address: "a1",
         color: "rojo",
         feature: "oversize"
     },
     {
+        id: "P002",
+        groupId: "P55",
+        // sellerId: "V002",
         category: "pantalón",
         size: "xl",
         price: 45.99,
         discount: 10,
         isSold: true,
         manufactureDate: new Date("2024-02-20"),
-        sellerId: "V002",
-        id: "P002",
         saleDate: new Date("2024-03-01"),
         address: "b2",
         color: "azul",
@@ -104,6 +118,17 @@ const clothes: IClothe[] = [
 
 export default function InventoryPage() {
     // const [currentPage, setCurrentPage] = useState(1)
+    const [editingProduct, setEditingProduct] = useState<IClothe | null>(null)
+
+    const handleEditClick = (product: IClothe) => {
+        setEditingProduct(product)
+    }
+
+    const handleSaveEdit = () => {
+        // Here you would typically update the product in your database
+        console.log("Saving edited product:", editingProduct)
+        setEditingProduct(null)
+    }
 
 
     return (
@@ -163,7 +188,7 @@ export default function InventoryPage() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Product Id</TableHead>
+                                <TableHead>Group Id</TableHead>
                                 <TableHead>Category</TableHead>
                                 <TableHead>Size</TableHead>
                                 <TableHead>Color</TableHead>
@@ -183,9 +208,98 @@ export default function InventoryPage() {
                                     {/* <TableCell>{item.quantity}</TableCell> */}
                                     <TableCell>${item.price.toFixed(2)}</TableCell>
                                     <TableCell>
-                                        <Button variant="ghost" size="sm">
+                                        {/* <Button variant="ghost" size="sm">
                                             Edit
-                                        </Button>
+                                        </Button> */}
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="ghost" size="sm" onClick={() => handleEditClick(item)}>
+                                                    Edit
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[425px]">
+                                                <DialogHeader>
+                                                    <DialogTitle>Edit Product</DialogTitle>
+                                                    <DialogDescription>
+                                                        Make changes to the product here. Click save when youre done.
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                <div className="grid gap-4 py-4">
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="name" className="text-right">
+                                                            Name
+                                                        </Label>
+                                                        <Input
+                                                            id="name"
+                                                            // value={editingProduct?.name}
+                                                            onChange={(e) => setEditingProduct(prev => ({ ...prev!, name: e.target.value }))}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="category" className="text-right">
+                                                            Category
+                                                        </Label>
+                                                        <Input
+                                                            id="category"
+                                                            value={editingProduct?.category}
+                                                            onChange={(e) => setEditingProduct(prev => ({ ...prev!, category: e.target.value }))}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="size" className="text-right">
+                                                            Size
+                                                        </Label>
+                                                        <Input
+                                                            id="size"
+                                                            value={editingProduct?.size}
+                                                            onChange={(e) => setEditingProduct(prev => ({ ...prev!, size: e.target.value }))}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="color" className="text-right">
+                                                            Color
+                                                        </Label>
+                                                        <Input
+                                                            id="color"
+                                                            value={editingProduct?.color}
+                                                            onChange={(e) => setEditingProduct(prev => ({ ...prev!, color: e.target.value }))}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="quantity" className="text-right">
+                                                            Quantity
+                                                        </Label>
+                                                        <Input
+                                                            id="quantity"
+                                                            type="number"
+                                                            // value={editingProduct?.quantity}
+                                                            onChange={(e) => setEditingProduct(prev => ({ ...prev!, quantity: parseInt(e.target.value) }))}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="price" className="text-right">
+                                                            Price
+                                                        </Label>
+                                                        <Input
+                                                            id="price"
+                                                            type="number"
+                                                            step="0.01"
+                                                            value={editingProduct?.price}
+                                                            onChange={(e) => setEditingProduct(prev => ({ ...prev!, price: parseFloat(e.target.value) }))}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <DialogFooter>
+                                                    <Button type="submit" onClick={handleSaveEdit}>Save changes</Button>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
                                     </TableCell>
                                 </TableRow>
                             ))}
