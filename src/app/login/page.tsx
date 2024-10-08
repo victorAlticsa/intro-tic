@@ -6,10 +6,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PackageOpen } from "lucide-react"
-
+import { useRouter } from 'next/navigation'
+ 
 export default function LoginPage() {
+    const router = useRouter();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        router.push('/', { scroll: false })
         // Here you would typically handle the login logic
         console.log('Login submitted')
     }
@@ -68,7 +71,7 @@ export default function LoginPage() {
                 <div className="text-center">
                     <p className="text-sm text-muted-foreground">
                         Don&apos;t have an account?{' '}
-                        <Link href="/signup" className="text-primary hover:underline">
+                        <Link href="/sign-up" className="text-primary hover:underline">
                             Sign up
                         </Link>
                     </p>
