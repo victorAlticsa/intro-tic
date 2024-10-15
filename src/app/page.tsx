@@ -34,20 +34,29 @@ import {
   Users,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
+import Image from 'next/image'
+ 
 export default function HomeDashboard() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center" href="#">
-          <PackageOpen className="h-6 w-6" />
+          {/* <PackageOpen className="h-6 w-6" /> */}
+          <Image
+            src="/imagotipo.png"
+            width={100}
+            height={100}
+            alt="Picture of the author"
+            // loading="eager"
+            
+          />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <nav className="ml-auto flex items-center gap-4 sm:gap-6">
           <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
             Dashboard
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/inventory">
             Inventory
           </Link>
           <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
@@ -60,7 +69,7 @@ export default function HomeDashboard() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="/avatars/01.png" alt="@johndoe" />
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@johndoe" />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
               </Button>
