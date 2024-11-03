@@ -53,16 +53,16 @@ export default function HomeDashboard() {
           <span className="sr-only">Acme Inc</span>
         </Link>
         <nav className="ml-auto flex items-center gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/">
             Dashboard
           </Link>
           <Link className="text-sm font-medium hover:underline underline-offset-4" href="/inventory">
             Inventory
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/orders">
             Orders
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#">
+          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/reports">
             Reports
           </Link>
           <DropdownMenu>
